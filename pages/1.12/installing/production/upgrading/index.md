@@ -30,6 +30,97 @@ If upgrading is performed on a supported OS with all prerequisites fulfilled, th
 - An upgraded DC/OS Marathon leader cannot connect to the leading Mesos master until it has also been upgraded. The DC/OS UI cannot be trusted until all masters are upgraded. There are multiple Marathon scheduler instances and multiple Mesos masters, each being upgraded, and the Marathon leader may not be the Mesos leader.
 - Task history in the Mesos UI will not persist through the upgrade.
 
+## Supported upgrade paths matrix
+The following matrix table lists the supported upgrade paths for DC/OS 1.12.
+
+
+|**Display Icon** | **Service** |
+|---------- | ------- |
+| ⚫| Supported |
+| ◯| Not Supported |
+
+
+<table style="border-collapse: collapse;" Border = "1" Cellpadding = "5" Cellspacing = "5">
+   <tr>
+    <th Rowspan = "20" Align = "center"><strong>Upgrade<br>From</strong></th>
+   <tr>
+    <th></th>
+    <th Colspan = "1" Align = "center"><strong>Upgrade To</strong></th>
+   </tr>
+    <th></th>
+    <th Align = "center">1.12.0</th>
+   </tr>
+   <tr>
+    <th>1.10.0</th>
+    <td Align = "center">◯</td>
+   </tr>
+   <tr>
+    <th>1.10.1</th>
+    <td Align = "center">◯</td>
+   </tr>
+   <tr>
+    <th>1.10.2</th>
+    <td Align = "center">◯</td>
+   </tr>
+    <tr>
+    <th>1.10.3</th>
+    <td Align = "center">◯</td>
+   </tr>
+   <tr>
+    <th>1.10.4</th>
+    <td Align = "center">◯</td>
+   </tr>
+   <tr>
+    <th>1.10.5</th>
+    <td Align = "center">◯</td>
+   </tr>
+   <tr>
+    <th>1.10.6</th>
+    <td Align = "center">⚫</td>
+   </tr>
+   <tr>
+    <th>1.10.7</th>
+    <td Align = "center">⚫</td>
+   </tr>
+   <tr>
+    <th>1.10.8</th>
+    <td Align = "center">⚫</td>
+   </tr>
+   <tr>
+    <th>1.11.0</th>
+    <td Align = "center">◯</td>
+   </tr>
+   <tr>
+    <th>1.11.1</th>
+    <td Align = "center">◯</td>
+   </tr>
+   <tr>
+    <th>1.11.2</th>
+    <td Align = "center">◯</td>
+   </tr>
+   <tr>
+    <th>1.11.3</th>
+    <td Align = "center">◯</td>
+   </tr>
+   <tr>
+    <th>1.11.4</th>
+    <td Align = "center">⚫</td>
+   </tr>
+   <tr>
+    <th>1.11.5</th>
+    <td Align = "center">⚫</td>
+   </tr>
+   <tr>
+    <th>1.11.6</th>
+    <td Align = "center">⚫</td>
+   </tr>
+   <tr>
+    <th>1.11.7</th>
+    <td Align = "center">⚫</td>
+   </tr>
+  </table>
+
+
 # Modifying DC/OS configuration [enterprise type="inline" size="small" /]
 
 You _cannot_ change your cluster configuration at the same time as upgrading to a new version. Cluster configuration changes must be done with a patch to an already installed version. For example, you cannot simultaneously upgrade a cluster from 1.10 to 1.11 and add more public agents. You can add more public agents with a patch to 1.11, and then upgrade to 1.12. Or you can upgrade to 1.12 and then add more public agents by [patching 1.12](/1.12/installing/production/patching/) after the upgrade.
@@ -48,8 +139,8 @@ These steps must be performed for version upgrades.
 - In CentOS or RedHat, install IP sets with this command (used in some IP detect scripts): `sudo yum install -y ipset`
 - You must be familiar with using `systemctl` and `journalctl` command line tools to review and monitor service status. Troubleshooting notes can be found at the end of this [document](#troubleshooting).
 - You must be familiar with the [DC/OS Installation Guide][install].
-- Take a snapshot of ZooKeeper prior to upgrading. Marathon supports rollbacks, but does not support downgrades.
-- [Take a snapshot of the IAM database](/1.12/installing/installation-faq/#q-how-do-i-backup-the-iam-database-enterprise) prior to upgrading. [enterprise type="inline" size="small" /]
+- Take a [snapshot of ZooKeeper](/1.12/installing/installation-faq/#q-how-do-i-backup-zookeeper-using-guano) prior to upgrading. Marathon supports rollbacks, but does not support downgrades.
+- Take a [snapshot of the IAM database](/1.12/installing/installation-faq/#q-how-do-i-backup-the-iam-database-enterprise) prior to upgrading. [enterprise type="inline" size="small" /]
 - Ensure that Marathon event subscribers are disabled before beginning the upgrade. Leave them disabled after completing the upgrade, as this feature is now deprecated.
 
 <p class="message--note"><strong>NOTE: </strong>Marathon event subscribers are disabled by default. Check to see if the line <code>--event_subscriber "http_callback"</code> has been added to <code>sudo vi /opt/mesosphere/bin/marathon.sh</code> on your master node(s). In such a case, you must remove that line in order to disable event subscribers.</p>

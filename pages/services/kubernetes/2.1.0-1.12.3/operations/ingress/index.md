@@ -2,8 +2,8 @@
 layout: layout.pug
 navigationTitle: External Ingress
 title: External Ingress
-menuWeight: 90
-excerpt: Creating an Ingress controller
+menuWeight: 7
+excerpt: Creating an Ingress controller for your Kubernetes cluster
 ---
 
 <!-- This source repo for this topic is https://github.com/mesosphere/dcos-kubernetes-cluster -->
