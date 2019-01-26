@@ -2,7 +2,7 @@
 layout: layout.pug
 navigationTitle: Kubernetes __VERSION__
 title: Kubernetes __VERSION__
-menuWeight: 400
+menuWeight: 10
 excerpt:
 ---
 
