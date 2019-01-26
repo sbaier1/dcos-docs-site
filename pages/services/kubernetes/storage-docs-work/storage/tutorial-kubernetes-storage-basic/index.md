@@ -6,7 +6,7 @@ menuWeight: 1
 excerpt: Run through a demonstration of each optional method of deployment lifecycle management.
 ---
 
-This simple tutorial runs through each of two different methods available via the Amazon EBS CSI driver for volume lifecycle management using CSI with Kubernetes: a dynamic and a pre-provisioned method. The instructions in what follows assume you have `kubectl` access to your Kubernetes cluster being managed by [MKE]().
+This simple tutorial runs through each of two different deployment methods available via the Amazon EBS CSI driver for volume lifecycle management using CSI with Kubernetes. One is dynamic and the other is a pre-provisioned method. The instructions in what follows demonstrate both and assume you have `kubectl` access to your Kubernetes cluster being managed by [MKE]().
 
 # Prerequisites
 
