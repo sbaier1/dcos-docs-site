@@ -1,86 +1,84 @@
 ---
 layout: layout.pug
 navigationTitle: Quick Start
-title: Quick Start - Managing volumes with Kubernetes CSI
+title: Kubernetes CSI with MKE
 menuWeight: 1
-excerpt: Run through a demonstration of each optional method of deployment lifecycle management.
+excerpt: Getting started using both dynamic and pre-provisioned Kubernetes CSI deployments
 ---
 
-This simple tutorial runs through each of two different deployment methods available via the Amazon EBS CSI driver for volume lifecycle management using CSI with Kubernetes. One is dynamic and the other is a pre-provisioned method. The instructions in what follows demonstrate both and assume you have `kubectl` access to your Kubernetes cluster being managed by [MKE]().
+A CSI (Container Storage Interface) driver conforms to the [CSI protocol](https://github.com/container-storage-interface/spec/blob/master/spec.md) for storage plugin standardization. The aim of the standard is so that storage providers (e.g. Amazon EBS) can develop one plugin that can work for any container orchestration system, including Kubernetes. Accordingly, MKE takes advantage of the [Amazon EBS CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) when managing the lifecycle of [Amazon EBS volumes](https://aws.amazon.com/ebs/) across your Kubernetes clusters.
 
-# Prerequisites
+The Amazon EBS CSI enables two methods of using CSI with your Kubernetes clusters. One method is dynamic and the other method is predetermined. The [basic tutorial that follows](/tutorial-kubernetes-storage-basic) demonstrates how to set up, then run through both methods of deployment lifecycle - dynamic and predetermined - each covering the basic steps of the deployment lifecycle: provisioning, attaching, deleting.
 
-- a Kubernetes cluster (running 1.13?)
+
+# Quick Start - How to Manage Volumes using AWS ELB CSI Driver
+
+This simple tutorial runs through each of two different methods available via the [Amazon EBS CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) for volume lifecycle management using CSI with a Kubernetes cluster: a dynamic and a pre-provisioned method. The instructions in what follows assume you have `kubectl` access to your Kubernetes cluster being managed by [MKE](https://docs.mesosphere.com/services/kubernetes/2.1.1-1.12.4/overview/).
+
+## Prerequisites
+
+- wget utility installed in your bash environment
+- a Kubernetes 1.13 cluster
 - access to `kubectl` connected to your Kubernetes cluster(s) being managed by MKE
 - ability to provision volumes on AWS in the same AZ as the target Kubernetes cluster(s)
 
-# Setting Up
+## Setting Up
 
-## Download the demo repository
+1. Download the demo repository to your working directory:
 
-Download the demo deployments repository:
+    ```bash
+    wget https://github.com/mesosphere/csi-driver-deployments/archive/master.zip -O csi-driver-deployments.zip
+    unzip csi-driver-deployments.zip && rm csi-driver-deployments.zip
+    cd csi-driver-deployments-master/aws-ebs/kubernetes
+    ```
 
-```bash
-wget https://github.com/mesosphere/csi-driver-deployments/archive/master.zip -O csi-driver-deployments.zip
-unzip csi-driver-deployments.zip && rm csi-driver-deployments.zip
-cd csi-driver-deployments-master/aws-ebs/kubernetes
-```
+1. Grant AWS API IAM permissions:
 
-## Enable the cluster
+    The CSI driver must be connected to the AWS API. This sample IAM policy can be used to grant the driver the necessary permissions:
 
-To ready your cluster for the CSI driver, you first need to [prepare your Kubernetes cluster for the driver](https://kubernetes-csi.github.io/docs/Home.html) - by ensuring certain key features are enabled. For instance, CSI on Kubernetes requires [priveledged pods]() and [mount propagation]() to be enabled. Each feature can be enabled or disabled individually.
+    <!-- following json asset taken from public repo: https://github.com/mesosphere/csi-driver-deployments/tree/master/aws-ebs/kubernetes -->
 
-However, for this simple demonstration, running the `kubectl` and `kubeapiserver` commands with the following flag:
-
-```bash
---feature-gates=VolumeSnapshotDataSource=true,KubeletPluginsWatcher=true,CSINodeInfo=true,CSIDriverRegistry=true
-```
-
-will enable all of the Kubernetes CSI features compatible with your respective versions of these Kubernetes components:
-
-```bash
-kubectl --feature-gates=VolumeSnapshotDataSource=true,KubeletPluginsWatcher=true,CSINodeInfo=true,CSIDriverRegistry=true
-```
-
-```bash
-kube-apiserver --feature-gates=VolumeSnapshotDataSource=true,KubeletPluginsWatcher=true,CSINodeInfo=true,CSIDriverRegistry=true
-```
-
-## Grant Permissions
-
-The CSI driver must be connected to the AWS API. This sample IAM policy can be used to grant the driver the necessary permissions:
-
-<!-- following json asset taken from public repo: https://github.com/mesosphere/csi-driver-deployments/tree/master/aws-ebs/kubernetes -->
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
+    ```json
     {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:AttachVolume",
-        "ec2:CreateSnapshot",
-        "ec2:CreateTags",
-        "ec2:CreateVolume",
-        "ec2:DeleteSnapshot",
-        "ec2:DeleteTags",
-        "ec2:DeleteVolume",
-        "ec2:DescribeInstances",
-        "ec2:DescribeSnapshots",
-        "ec2:DescribeTags",
-        "ec2:DescribeVolumes",
-        "ec2:DetachVolume"
-      ],
-      "Resource": "*"
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+        "Effect": "Allow",
+        "Action": [
+            "ec2:AttachVolume",
+            "ec2:CreateSnapshot",
+            "ec2:CreateTags",
+            "ec2:CreateVolume",
+            "ec2:DeleteSnapshot",
+            "ec2:DeleteTags",
+            "ec2:DeleteVolume",
+            "ec2:DescribeInstances",
+            "ec2:DescribeSnapshots",
+            "ec2:DescribeTags",
+            "ec2:DescribeVolumes",
+            "ec2:DetachVolume"
+        ],
+        "Resource": "*"
+        }
+    ]
     }
-  ]
-}
-```
+    ```
 
-# Dynamic Kubernetes CSI Deployment
+    The recommended approach in this case is to [add the above policy to the EC2 instance roles](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html). If this is not possible in your case, you will need to modify the `secrets.yaml` with `key_id`, `access_key` and optionally `session_token` credentials for a IAM user that does have this policy.
 
-## Launch the dynamic CSI deployment
+
+1. Install the AWS EBS CSI driver:
+
+    ```bash
+    kubectl apply -f 0.2.0/
+    ```
+
+Your Kubernetes cluster is ready to provision volumes via AWS EBS.
+
+## Dynamically Provisioned Volume
+
+### Launch a deployment with a dynamically provisioned EBS volume
+
 
 1. To begin the demonstration, launch the following application deployment:
 
@@ -88,9 +86,8 @@ The CSI driver must be connected to the AWS API. This sample IAM policy can be u
     kubectl apply -f example-dynamic/
     ```
 
-    The dummy app `example-dynamic` utilizes the dynamic method for Kubernetes CSI.
+    The dummy app `example-dynamic` utilizes dynamically provisioned EBS volumes created by the CSI driver.
 
-    <!-- What is the big difference between the two modes? What makes the dynamic method "dynamic" per se? -->
 
 1. Request for a volume for the deployment:
 
@@ -101,14 +98,13 @@ The CSI driver must be connected to the AWS API. This sample IAM policy can be u
 1.  Ping the cluster for a description of attached persistant volume:
 
     ```bash
-    kubectl decribe pv
+    kubectl describe pv
     ```
 
-1. Note the returned value of `VolumeHandle` from the CLI output and confirm this value matches in the AWS console:
+1. Note the returned value of `VolumeHandle` from the CLI output and confirm this value matches in the AWS console.
 
-    ---OUTPUT/SCREENSHOT NEEDED OF THIS VALIDATION STEP---
 
-## Delete the attached pod
+### Delete the attached pod
 
 1. Get the name of the pod:
 
@@ -119,28 +115,34 @@ The CSI driver must be connected to the AWS API. This sample IAM policy can be u
 1. Take note when the pod started writing data:
 
     ```bash
-    kubectl exec -it __POD__ cat /data/out.txt
+    kubectl exec -it <pod-name> cat /data/out.txt
     ```
 
 1. Delete the pod:
 
     ```bash
-    kubectl delete pods __POD__
+    kubectl delete pods <pod-name>
     ```
 
-    **Deleting the pods takes a few seconds because the driver is unmounting the volume and detaching from the instance.**
+    Deleting the pods takes a few seconds because the driver is unmounting the volume and detaching from the instance.
 
-1. Take note again of when the pod started writing data:
+1. Get a list of your pods again:
 
     ```bash
-    kubectl exec -it __POD__ cat /data/out.txt
+    kubectl get pods
     ```
-1. You can see that data persisted across pod restart:
 
-    ----SCREENSHOT HERE FOR VALIDATION STEP----
+    However, because the deployment is still active, Kubernetes will immediately reattach the volume to a new pod.
+
+1. Now, take note of when this new pod started writing data:
+
+    ```bash
+    kubectl exec -it <new-pod-name> cat /data/out.txt
+    ```
+    You can see that data persisted across pod restart, as the log begins at the same time.
 
 
-## Delete the dynamic deployment and associated volume
+### Delete the deployment and associated dynamically provisioned volume
 
 1. Delete dynamic application deployment:
 
@@ -148,9 +150,9 @@ The CSI driver must be connected to the AWS API. This sample IAM policy can be u
     kubectl delete deployment ebs-dynamic-app
     ```
 
-1. Check the AWS console, see that the volume itself will still be "available":
+1. Check the AWS console, see that the volume will still be "available":
 
-      ----SCREENSHOT HERE FOR VALIDATION STEP----
+    ![Screenshot of AWS EBS from above still "Available".](/services/img/valavailablevolk8s.png)
 
 1. Delete the dynamic deployment's pvc:
 
@@ -159,44 +161,67 @@ The CSI driver must be connected to the AWS API. This sample IAM policy can be u
     ```
 1. Check the AWS console again, this time the volume is deleted and does not even show up:
 
-      ----SCREENSHOT HERE FOR VALIDATION STEP----
+![Screenshot of AWS EBS volume absent from where it had been.](/services/img/validatevolumedeletedk8s.png)
 
-# Pre-provisioned Kubernetes CSI deployment
+## Pre-provisioned Volume
 
-## Launch the pre-provisioned deployment
+### Launch a deployment with a pre-provisioned EBS volume
 
  <!-- a use case is using an existing EBS volume in a new cluster -->
 
-1. Create a new volume in the same AZ as the cluster in the AWS console, note the `volumeID` of the new cluster:
+1. Create a new EBS volume in the same AZ as the cluster in the AWS console, note the `volumeID` of the new volume:
 
-      ----SCREENSHOT HERE FOR VALIDATION STEP----
+  ![Screenshot of AWS EBS volume "Created" dialog for newly created volume.](/services/img/createvol.png)
 
-1. Next, edit the `pre-provisioned/pv.yaml`, by inserting the value of `volumeID` from the previous step in for the value of `volumeHandle` in the `spec:csi:volumeHandle`, replacing `__REPLACE_ME__`.
+1. Next, edit the `pre-provisioned/pv.yaml`, by inserting the value of `volumeID` from the previous step in for the value of `volumeHandle` in the `spec.csi.volumeHandle`, replacing `__REPLACE_ME__`:
 
-      ----SCREENSHOT HERE FOR VALIDATION STEP----
+    ```json
+        apiVersion: v1
+        kind: PersistentVolume
+        metadata:
+        name: pre-provisioned
+        annotations:
+            pv.kubernetes.io/provisioned-by: ebs.csi.aws.com
+        spec:
+        accessModes:
+            - ReadWriteOnce
+        capacity:
+            storage: 1Gi
+        csi:
+            driver: ebs.csi.aws.com
+            fsType: ext4
+            volumeHandle: __REPLACE_ME__
+        claimRef:
+            namespace: default
+            name: pre-provisioned
+        persistentVolumeReclaimPolicy: Retain
+    ```
 
-1. Launch the pre-provisioned application deployment:
+1. Launch the application deployment with a pre-provisioned EBS volume:
 
     ```bash
     kubectl apply -f pre-provisioned/
     ```
+
 ## Delete the pre-provisioned deployment
 
 1. Delete the application deployment:
 
-    ``bash
+    ```bash
     kubectl delete deployment ebs-pre-provisioned-app
     ```
 
-1. Delete the PV and PVC
+1. Delete the PV and PVC:
 
     ```bash
     kubectl delete pvc pre-provisioned
     kubectl delete pv pre-provisioned
     ```
 
-1. Check the AWS console again, the volume will be "available" even though the PV and PVC have been deleted because we have set the appropriate retainment parameter:
+1. Check the AWS console again, the volume will be "available" even though the PVC and PV have been deleted. This is because we have set the appropriate retainment parameter in the PV configuration:
 
-`persistentVolumeReclaimPolicy: Retain`
+    ```json
+    persistentVolumeReclaimPolicy: Retain`
+    ```
 
-so that the same EBS volume can be reused in other pods.
+    so that that same EBS volume can be reused in other pods later on if desired.
