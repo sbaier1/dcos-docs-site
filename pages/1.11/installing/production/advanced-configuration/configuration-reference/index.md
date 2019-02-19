@@ -10,7 +10,6 @@ excerpt: Configuration parameters available for DC/OS Enterprise and DC/OS Open 
 
 This page contains the configuration parameters for both DC/OS Enterprise and DC/OS Open Source.
 
-
 # Cluster Setup
 
 | Parameter                              | Description                                                                                                                                               |
@@ -56,7 +55,7 @@ This page contains the configuration parameters for both DC/OS Enterprise and DC
 |[enable_ipv6](#enable-ipv6)                            | A boolean that indicates if IPv6 networking support is available in DC/OS. Default value is `true`. |
 | [dcos_l4lb_enable_ipv6](#dcos-l4lb-enable-ipv6)        | A boolean that indicates if layer 4 load-balancing is available for IPv6 networks. This takes affect only if `enable_ipv6` is set to `true`. Default value is `false`.|
 |[dcos_ucr_default_bridge_subnet](#dcos-ucr-default-bridge-subnet) |IPv4 subnet allocated to the `mesos-bridge` CNI network for UCR bridge-mode networking. |
-
+|[network_cni_root_dir_persist](#network_cni_root_dir_persist) |A boolean that specifies whether to make the CNI root directory persistent during a host reboot. The default value is `false`. If you set this configuration option to `true`, the CNI root directory is created under `work dir`. Setting this option to `true` enables the CNI isolator to do proper cleanup after rebooting a host node. NOTE: It requires Host reboot for this flag to take effect.|
 
 [enterprise]
 # Storage
@@ -214,14 +213,13 @@ You can use the following options to further configure the Docker credentials:
             *  `cluster_docker_credentials_write_to_etc: 'false'` Do not write a credentials file.
     *  `cluster_docker_credentials_dcos_owned: 'false'` The credentials file is stored in `/etc/mesosphere/docker_credentials`.
 
-For more information, see the [examples](/1.11/installing/ent/custom/configuration/examples/#docker-credentials).
+For more information, see the [examples](/1.11/installing/production/deploying-dcos/configuration/examples/#docker-credentials).
 
 ## cluster_docker_credentials_enabled
 Whether to pass the Mesos `--docker_config` option containing [`cluster_docker_credentials`](#cluster-docker-credentials) to Mesos.
 
 *  `cluster_docker_credentials_enabled: 'true'` Pass the Mesos `--docker_config` option to Mesos. It will point to a file that contains the provided `cluster_docker_credentials` data.
 *  `cluster_docker_credentials_enabled: 'false'` Do not pass the Mesos `--docker_config` option to Mesos.
-
 
 ## cluster_docker_registry_url
 The custom URL that Mesos uses to pull Docker images from. If set, it will configure the Mesos' `--docker_registry` flag to the specified URL. This changes the default URL Mesos uses for pulling Docker images. By default `https://registry-1.docker.io` is used.
@@ -254,8 +252,7 @@ Custom installation checks that are added to the default check configuration pro
     - `cmd` - Specify an array of health check command strings
     - `timeout` - Specify how long to wait, in seconds, before assuming the check failed. A check that times out is assumed to have a status of `3 (UNKNOWN)`
 
-For more information on how these custom checks are used, see the [examples](/1.11/installing/ent/custom/configuration/examples/#custom-checks) and [Node and Cluster Health Check](/1.11/installing/production/deploying-dcos/node-cluster-health-check/) documentation.
-
+For more information on how these custom checks are used, see the [examples](/1.11/installing/production/deploying-dcos/configuration/examples/#custom-checks) and [Node and Cluster Health Check](/1.11/installing/production/deploying-dcos/node-cluster-health-check/) documentation.
 
 ## dcos_audit_logging [enterprise type="inline" size="small" /]
 Indicates whether security decisions (authentication, authorization) are logged for Mesos, Marathon, and Jobs.
@@ -300,8 +297,7 @@ Indicates whether to enable DC/OS virtual networks.
             *  `subnet` The subnet that is allocated to the virtual network.
             *  `prefix` The size of the subnet that is allocated to each agent and thus defines the number of agents on which the overlay can run. The size of the subnet is carved from the overlay subnet.
 
- For more information, see the [example](/1.11/installing/ent/custom/configuration/examples/#overlay) and [documentation](/1.11/networking/SDN/dcos-overlay/).
-
+ For more information, see the [example](/1.11/installing/production/deploying-dcos/configuration/examples/#overlay) and [documentation](/1.11/networking/SDN/dcos-overlay/).
 
 ## dns_bind_ip_blacklist
 A list of IP addresses that DC/OS DNS resolvers cannot bind to.
@@ -334,7 +330,6 @@ In this example, `example.com` has the public website `www.example.com` and all 
 dns_search: dc1.example.com dc1.example.com example.com dc1.example.com dc2.example.com example.com
 ```
 
-
 ### docker_remove_delay
 The amount of time to wait before removing docker containers (i.e., `docker rm`) after Mesos regards the container as TERMINATED (e.g., 3days, 2weeks, etc). This only applies for the Docker Containerizer. It is recommended that you accept the default value 1 hour.
 
@@ -342,7 +337,7 @@ The amount of time to wait before removing docker containers (i.e., `docker rm`)
 Indicates whether to run the [docker-gc](https://github.com/spotify/docker-gc#excluding-images-from-garbage-collection) script, a simple Docker container and image garbage collection script, once every hour to clean up stray Docker containers. You can configure the runtime behavior by using the `/etc/` config. For more information, see the [documentation](https://github.com/spotify/docker-gc#excluding-images-from-garbage-collection)
 
 *  `enable_docker_gc: 'true'` Run the docker-gc scripts once every hour. This is the default value for [cloud](/1.11/installing/evaluation/) template installations.
-*  `enable_docker_gc: 'false'` Do not run the docker-gc scripts once every hour. This is the default value for [custom](/1.11/installing/ent/custom/) installations.
+*  `enable_docker_gc: 'false'` Do not run the docker-gc scripts once every hour. This is the default value for [custom](/1.11/installing/production/) installations.
 
 ## exhibitor_storage_backend
 The type of storage backend to use for Exhibitor. You can use internal DC/OS storage (`static`) or specify an external storage system (`ZooKeeper`, `aws_s3`, and `Azure`) for configuring and orchestrating ZooKeeper with Exhibitor on the master nodes. Exhibitor automatically configures your ZooKeeper installation on the master nodes during your DC/OS installation.
@@ -492,6 +487,10 @@ The location of the Mesos work directory on master nodes. This defines the `work
 ## mesos_max_completed_tasks_per_framework
 The number of completed tasks for each framework that the Mesos master will retain in memory. In clusters with a large number of long-running frameworks, retaining too many completed tasks can cause memory issues on the master. If this parameter is not specified, the default Mesos value of 1000 is used.
 
+### network_cni_root_dir_persist
+Specifies whether to make the CNI root directory persistent during a host reboot. The default value is `false`. If you set this configuration option to `true`, the CNI root directory is created under `work dir`. Setting this option to `true` enables the CNI isolator to do proper cleanup after rebooting a host node.
+
+**Note:** It requires Host reboot for this flag to take effect.
 
 ## oauth_enabled [oss type="inline" size="small" /]
 Indicates whether to enable authentication for your cluster. <!-- DC/OS auth -->
@@ -608,7 +607,7 @@ Indicates whether to enable the DC/OS proxy.
 
         **Note:** Wildcard characters (`*`) are not supported.
 
-For more information, see the [examples](/1.11/installing/ent/custom/configuration/examples/#http-proxy).
+For more information, see the [examples](/1.11/installing/production/deploying-dcos/configuration/examples/#http-proxy).
 
 **Note:** You should also configure an HTTP proxy for [Docker](https://docs.docker.com/engine/admin/systemd/#/http-proxy).
 

@@ -1,8 +1,8 @@
 ---
 layout: layout.pug
-navigationTitle: Marathon-LB Release Notes
-title: Marathon-LB Release Notes
-menuWeight: 0
+navigationTitle: Release notes
+title: Release notes
+menuWeight: 80
 excerpt: Release notes for Marathon-LB
 ---
 

@@ -11,10 +11,10 @@ model: /services/spark/data.yml
 
 1. Before submitting your job, upload the artifact (such as a `jar` file) to a location that is visible to the cluster (such as HTTP, S3, or HDFS). [Learn more][13].
 
-1. Run the job. 
+1. Run the job.
     - Include all configuration flags for the job before the `jar` url.
-    - Provide the arguments for the {{ model.techShortName }} job after the `jar` url. 
-    
+    - Provide the arguments for the {{ model.techShortName }} job after the `jar` url.
+
     Follow the template `dcos spark run --submit-args="<flags> URL [args]`, where:
     - `<flags>` are options like `--conf spark.cores.max=16` and `--class my.aprk.App`
     - `URL` is the location of the application
@@ -65,7 +65,7 @@ This sample property file sets the containerizer to `mesos`, the executor cores 
 
 ## Secrets
 
-Enterprise DC/OS provides a secrets store to enable access to sensitive data such as database passwords, private keys, and API tokens. DC/OS manages secure transportation of secret data, access control and authorization, and secure storage of secret content. A secret can be exposed to drivers and executors as a file or as an environment variable. 
+Enterprise DC/OS provides a secrets store to enable access to sensitive data such as database passwords, private keys, and API tokens. DC/OS manages secure transportation of secret data, access control and authorization, and secure storage of secret content. A secret can be exposed to drivers and executors as a file or as an environment variable.
 
 To configure a job to access a secret, see the sections on
 * [Using the Secret Store](../security/#using-the-secret-store) and
@@ -98,7 +98,7 @@ The DC/OS {{ model.techName }} Docker image contains OpenJDK 8 and Python 2.7.6.
 
 DC/OS {{ model.techName }} distributions 1.X are compiled with Scala 2.10.  DC/OS {{ model.techName }} distributions 2.X are compiled with Scala 2.11.  Scala is not binary compatible across minor verions, so your {{ model.techShortName }} job must be compiled with the same Scala version as your version of DC/OS {{ model.techName }}.
 
-The default DC/OS {{ model.techName }} distribution is compiled against Hadoop 2.6 libraries.  However, you can choose a different version by following the instructions in [Customize {{ model.techShortName }} distribution](/services/spark/2.5.0-2.2.1/install/#custom-dist/).
+The default DC/OS {{ model.techName }} distribution is compiled against Hadoop 2.7 libraries.  However, you can choose a different version by following the instructions in [Customize {{ model.techShortName }} distribution](/services/spark/2.5.0-2.2.1/install/#custom-dist/).
 
 
 [13]: http://spark.apache.org/docs/latest/submitting-applications.html

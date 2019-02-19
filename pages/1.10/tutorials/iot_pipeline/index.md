@@ -49,7 +49,7 @@ The following graphic illustrates the data flow:
 
 *  [DC/OS](/1.10/installing/) or [DC/OS Enterprise](/1.10/installing/) installed with at least 5 [private agents][6] and 1 [public agent][6].
 
-    **Tip** If you are running this tutorial using a DC/OS Enterprise cluster, you will want to make sure [security mode](/1.10/installing/custom/configuration/configuration-parameters/#security-enterprise) is set to permissive or strict. DC/OS installs in permissive security mode by default.
+    **Tip** If you are running this tutorial using a DC/OS Enterprise cluster, you will want to make sure [security mode](/1.10/installing/production/advanced-configuration/configuration-reference/#security-enterprise) is set to permissive or strict. DC/OS installs in permissive security mode by default.
 
 *  [DC/OS CLI](/1.10/cli/install/) installed.
 *  The public IP address of your public agent node. After you have installed DC/OS with a public agent node declared, you can [navigate to the public IP address][9] of your public agent node.
@@ -69,7 +69,7 @@ In this step you install Cassandra, Kafka, Marathon-LB, and Zeppelin from the DC
 
 3.  Click the **Catalog** tab. Find and click the **marathon-lb** package, click the **REVIEW & RUN** button, then again, then **RUN SERVICE**. When prompted by the modal alert, click **OPEN SERVICE**.
 
-**Tip** If you are having trouble with getting Marathon-LB up and running on an Enterprise cluster, try installing it following [these instructions](/services/marathon-lb/mlb-auth/). Depending on your [security mode](/1.10/security/ent/#security-modes), Marathon-LB may require service authentication for access to DC/OS.
+**Tip** If you are having trouble with getting Marathon-LB up and running on an Enterprise cluster, try installing it following [these instructions](/services/marathon-lb/mlb-install/). Depending on your [security mode](/1.10/security/ent/#security-modes), Marathon-LB may require service authentication for access to DC/OS.
 
 4.  Click the **Catalog** tab. Click the **zeppelin** package, then click the **REVIEW & RUN** button.
     1.  Click the **spark** tab on the left and set `cores_max` to `8`.
