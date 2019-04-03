@@ -9,15 +9,15 @@ set -o errexit -o nounset -o pipefail
 project_dir="$(cd "$(dirname "${BASH_SOURCE}")/../.." && pwd -P)"
 cd "${project_dir}"
 
-echo "Running Site..."
-make docker-site-run
+# echo "Running Site..."
+# make docker-site-run
 
-function cleanup() {
-  echo "Stopping and removing docker container..."
-  docker-compose -f ./docker/docker-compose.production.yml stop docs
-  docker-compose -f ./docker/docker-compose.production.yml rm -f docs
-}
-trap 'cleanup' EXIT
+# function cleanup() {
+#   echo "Stopping and removing docker container..."
+#   docker-compose -f ./docker/docker-compose.production.yml stop docs
+#   docker-compose -f ./docker/docker-compose.production.yml rm -f docs
+# }
+# trap 'cleanup' EXIT
 
 echo "Checking Links..."
 make docker-site-check-links
