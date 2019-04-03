@@ -22,6 +22,7 @@ You are encouraged to provide feedback on the new features and services at [supp
 DC/OS 1.13.0 (Beta) includes new features and capabilities to enhance the installation and deployment experience, simplify cluster administration, increase operational productivity and efficiency, and provide additional monitoring, alerting, logging, and reporting for better visibility into cluster activity.
 
 Some highlights for this release include:
+- Monitoring and metrics for cluster operations
 - Improvements to the Universal installer and upgrade process
 - New features and options for command-programs
 - New dashboard options for monitoring cluster performance
@@ -203,5 +204,4 @@ Unified Service accounts across DC/OS and Enterprise DC/OS enabling broader set 
 
 # Known issues and limitations
 - Mesos endpoints with the <code>.json</code> suffix are deprecated and should not be used in DC/OS 1.13.</p>
-
 - 
