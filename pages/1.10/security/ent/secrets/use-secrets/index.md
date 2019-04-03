@@ -52,7 +52,7 @@ File-based secrets are available in the sandbox of the task (`$MESOS_SANDBOX/<co
   - `dcos:adminrouter:ops:mesos full`: to view **Task** panel information.
   - `dcos:adminrouter:ops:slave full`: to view the details about the task, including the logs.
 
-  As long as the path of the secret and the path of the group [match up properly](/1.10//security/ent/#spaces), the service will be able to access the secret value.
+  As long as the path of the secret and the path of the group [match up properly](/1.10/security/ent/#spaces), the service will be able to access the secret value.
 
 The procedure differs depending on whether or not you want to make the secret available to a [pod](/1.10/deploying-services/pods/) or to an individual service.
 
@@ -86,16 +86,16 @@ The procedure varies by interface. Refer to the section that corresponds to your
    Environment variable-based secret:
 
    ```json
-   {  
+   {
       "id":"/developer/service",
       "cmd":"sleep 100",
-      "env":{  
-         "MY_SECRET":{  
+      "env":{
+         "MY_SECRET":{
             "secret":"secret0"
          }
       },
-      "secrets":{  
-         "secret0":{  
+      "secrets":{
+         "secret0":{
             "source":"developer/my-secret"
          }
       }
@@ -146,7 +146,7 @@ The procedure varies by interface. Refer to the section that corresponds to your
    If you want to test whether file-based secrets are successful, you can add `cat path` to the application `cmd` to have the secret printed to the `stdout` logs.
 
    For example:
-  
+
   ```json
   {
      "id": "developer/service",
@@ -177,16 +177,16 @@ The procedure varies by interface. Refer to the section that corresponds to your
    Environment variable-based secret:
 
    ```json
-   {  
+   {
       "id":"/developer/service",
       "cmd":"sleep 100",
-      "env":{  
-         "MY_SECRET":{  
+      "env":{
+         "MY_SECRET":{
             "secret":"secret0"
          }
       },
-      "secrets":{  
-         "secret0":{  
+      "secrets":{
+         "secret0":{
             "source":"developer/my-secret"
          }
       }
@@ -247,7 +247,7 @@ The procedure varies by interface. Refer to the section that corresponds to your
    If you want to test whether file-based secrets are successful, you can add `cat path` to the application `cmd` to have the secret printed to the `stdout` logs.
 
    For example:
-  
+
   ```json
   {
      "id": "developer/service",
@@ -349,7 +349,7 @@ The procedure varies by interface. Refer to the section that corresponds to your
    }
    ```
 
-   **Note:** Because the service group and the secret paths match, the pod will be able to access the secret. See [Namespacing](/1.10//security/ent/#spaces) for more details about the paths.
+   **Note:** Because the service group and the secret paths match, the pod will be able to access the secret. See [Namespacing](/1.10/security/ent/#spaces) for more details about the paths.
 
 1. Save the file with a descriptive name, such as `mypod.json`.
 

@@ -225,7 +225,7 @@ DC/OS allows you to restrict:
 
 - **User access to secrets:** use [permissions](/1.10/security/ent/perms-reference/#secrets) to control which users can access what secrets and what operations they can perform.
 
-- **Application access to secrets:** use [spaces](/1.10//security/ent/#spaces) to control which applications can retrieve what secrets.
+- **Application access to secrets:** use [spaces](/1.10/security/ent/#spaces) to control which applications can retrieve what secrets.
 
 # <a name="linux-users"></a>Linux User Accounts
 

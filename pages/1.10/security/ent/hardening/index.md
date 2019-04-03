@@ -32,7 +32,7 @@ However, there are a number of settings that you can modify independent of your 
 
 - [Use secrets to store and pass sensitive information to services](/1.10/security/ent/secrets/).
 
-- [Use spaces to restrict service access to secrets](/1.10//security/ent/#spaces).
+- [Use spaces to restrict service access to secrets](/1.10/security/ent/#spaces).
 
 - Tightly restrict the distribution of SSH keys. For debugging, consider using [`dcos task exec`](/1.10/monitoring/debugging/) instead.
 

@@ -75,7 +75,7 @@ Below is a list of third party open source software which is provided by Mesosph
 		</tr>
 		<tr>
 			<td>flask</td>
-			<td><a href="http://flask.pocoo.org/docs/0.11/license/#flask-license">Flask License</a></td>
+			<td><a href="http://flask.pocoo.org/docs/1.0/license/#flask-license">Flask License</a></td>
 		</tr>
 		<tr>
 			<td>hadoop</td>
@@ -87,7 +87,7 @@ Below is a list of third party open source software which is provided by Mesosph
 		</tr>
 		<tr>
 			<td>java</td>
-			<td><U><FONT COLOR="#0000FF"><A HREF="http://www.oracle.com/technetwork/java/javase/downloads/jre-6u21-license-159054.txt">http://www.oracle.com/technetwork/java/javase/downloads/jre-6u21-license-159054.txt</A></U></td>
+			<td><a href="https://www.oracle.com/technetwork/java/javase/terms/thirdpartyreadme60u26-1356070.html">https://www.oracle.com/technetwork/java/javase/terms/thirdpartyreadme60u26-1356070.html</td>
 		</tr>
 		<tr>
 			<td>libevent</td>

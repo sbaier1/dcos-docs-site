@@ -15,7 +15,7 @@ You can use customized [AWS Machine Images (AMI)](http://docs.aws.amazon.com/AWS
 To get started, build a custom AMI and then install DC/OS using the advanced templates.
 
 # Build a custom AMI
-This is the recommended method for building your own AMI. 
+This is the recommended method for building your own AMI.
 
 ## Build DC/OS cloud_images AMI
 
@@ -25,7 +25,7 @@ This is the recommended method for building your own AMI.
 
 1.  Launch the DC/OS advanced template using the AWS CloudFormation web console and specify the DC/OS cloud_images AMI. Verify that the cluster launched successfully. For more information, see the [documentation](/1.10/installing/evaluation/aws/aws-advanced/).
 
-## Modify the DC/OS cloud_images AMI 
+## Modify the DC/OS cloud_images AMI
 
 After you have successfully built and deployed the unmodified DC/OS cloud_images AMI using the AWS CloudFormation web console:
 
@@ -33,7 +33,7 @@ After you have successfully built and deployed the unmodified DC/OS cloud_images
 
 1.  Launch the DC/OS advanced templates using the AWS CloudFormation web console and specify your customized AMI. Verify that DC/OS starts as expected and that services can be launched on the DC/OS cluster.
 
-1.  Complete your installation by following [these instructions](1.10/installing/evaluation/aws/aws-advanced/).
+1.  Complete your installation by following [these instructions](/1.10/installing/evaluation/aws/aws-advanced/).
 
 ## Troubleshooting
 
