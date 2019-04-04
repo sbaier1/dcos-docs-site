@@ -9,8 +9,8 @@ set -o errexit -o nounset -o pipefail
 project_dir="$(cd "$(dirname "${BASH_SOURCE}")/../.." && pwd -P)"
 cd "${project_dir}"
 
-# echo "Running Site..."
-# make docker-site-run
+echo "Running Site..."
+make docker-site-run
 
 function cleanup() {
   echo "Stopping and removing docker container..."
